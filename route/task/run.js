@@ -23,6 +23,7 @@ function route(app) {
 		app.webservice.task(request.params.id).run(error => {
 			if (error) {
 				return next();
+				console.log(error);
 			}
 			response.redirect(`/${request.params.id}?running`);
 		});
