@@ -16,7 +16,9 @@ const getJsonFile = function getJsonFile(filePath, encoding = 'utf8') {
     .then(JSON.parse);
 };
 getJsonFile('pa11y-tasks.json').then(function (data) {
+  console.log(Object.entries(data));
   Object.keys(data).forEach(element => {
+    console.log(element);
     let el = Object.entries(element);
     console.log(el);
   });
