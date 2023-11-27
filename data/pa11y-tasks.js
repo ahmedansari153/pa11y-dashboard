@@ -16,11 +16,20 @@ const getJsonFile = function getJsonFile(filePath, encoding = 'utf8') {
     .then(JSON.parse);
 };
 getJsonFile('pa11y-tasks.json').then(function (data) {
+  client.tasks.get({}, function (err, tasks){
+    for(var t of tasks) {
+      client.task(t.id).remove(function(err) {
+        if(err)
+          console.log(err);
+      });
+    }
+  });
   Object.keys(data).forEach(element => {
     client.tasks.create({
       name: element,
       url: element,
-      standard: "WCAG2AA"
+      standard: "WCAG2AA",
+      hideElements: ".navigation.b2c, .breadcrumb, .support-title, .article-feedback, .article-nav, .return-to-result, .rel-help-library-wrap, .support-link-banner-wrap, .contact-us-link-menu, .footer-box, iframe"
     }, function (error, task) {
       if (error) {
         console.error('Error:', error);
