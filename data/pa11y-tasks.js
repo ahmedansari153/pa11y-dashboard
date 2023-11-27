@@ -5,7 +5,7 @@ var config = require('../config');
 var client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
 
 // Read the CSV file.
-fs.createReadStream('./data/pa11y-tasks.csv')
+fs.createReadStream('../data/pa11y-tasks.csv')
   .pipe(csv())
   .on('data', function(data) {
     // Create task.
