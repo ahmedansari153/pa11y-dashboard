@@ -16,10 +16,18 @@ const getJsonFile = function getJsonFile(filePath, encoding = 'utf8') {
     .then(JSON.parse);
 };
 getJsonFile('pa11y-tasks.json').then(function (data) {
-  console.log(Object.entries(data));
   Object.keys(data).forEach(element => {
-    console.log(element);
-    let el = Object.entries(element);
-    console.log(el);
+    client.tasks.create({
+      name: element,
+      url: element,
+      standard: "WCAG2AA"
+    }, function (error, task) {
+      if (error) {
+        console.error('Error:', error);
+      }
+      if (task) {
+        console.log('Imported:', task.name);
+      }
+    });
   });
 });
