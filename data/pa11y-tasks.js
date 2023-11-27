@@ -1,5 +1,4 @@
 const fs = require('fs');
-var data = require('pa11y-tasks.json')
 var createClient = require('pa11y-webservice-client-node');
 var config = require('../config');
 var client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
