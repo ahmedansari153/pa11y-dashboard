@@ -1,7 +1,7 @@
 var fs = require('fs');
 var csv = require('csv-parser');
 var createClient = require('pa11y-webservice-client-node');
-var config = require('./config');
+var config = require('../config');
 var client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
 
 // Read the CSV file.
