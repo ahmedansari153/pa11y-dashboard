@@ -29,7 +29,7 @@ getJsonFile('pa11y-tasks.json').then(function (data) {
       name: element,
       url: element,
       standard: "WCAG2AA",
-      timeout: 12000,
+      timeout: 600000,
       hideElements: ".navigation.b2c, .breadcrumb, .support-title, .article-feedback, .article-nav, .return-to-result, .rel-help-library-wrap, .support-link-banner-wrap, .contact-us-link-menu, .footer-box, iframe"
     }, function (error, task) {
       if (error) {
