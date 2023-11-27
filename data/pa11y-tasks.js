@@ -9,6 +9,7 @@ fs.createReadStream('./data/pa11y-tasks.csv')
   .pipe(csv())
   .on('data', function(data) {
     // Create task.
+    console.log(data.name);
     client.tasks.create({
       name: data.name,
       url: data.url,
