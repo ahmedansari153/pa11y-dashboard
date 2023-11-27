@@ -1,28 +1,30 @@
-var fs = require('fs');
-var csv = require('csv-parser');
+const fs = require('fs');
+var data = require('pa11y-tasks.json')
 var createClient = require('pa11y-webservice-client-node');
 var config = require('../config');
 var client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
 
-// Read the CSV file.
-fs.createReadStream('../data/pa11y-tasks.csv')
-  .pipe(csv())
-  .on('data', function(data) {
-    // Create task.
-    console.log(data.name);
+const getJsonFile = function getJsonFile(filePath, encoding = 'utf8') {
+  return new Promise(function getJsonFileImpl(resolve, reject) {
+     fs.readFile(filePath, encoding, function readFileCallback(err, contents) {
+         if(err) {
+            return reject(err);
+         }
+         resolve(contents);
+     });
+  })
+    .then(JSON.parse);
+};
+getJsonFile('../data/pa11y-tasks.json').then(function (data) { 
+  data.forEach(element => {
     client.tasks.create({
-      name: data.name,
-      url: data.url,
-      standard: data.standard
-    }, function (error, task) {
-      // Error and success handling.
-      if (error) {
-        console.error('Error:', error);
-      }
-      if (task) {
-        console.log('Imported:', task.name);
-      }
-    });
-  }).on('end', function () {
-    console.log('All tasks imported!');
+      name:  element.url,
+      url: element.url,
+      standard: element.standard
+    }, function (err, task) {
+        if(err)
+          console.log(err);
+        else console.log(task);
   });
+  });
+});
