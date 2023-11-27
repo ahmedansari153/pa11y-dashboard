@@ -1,5 +1,6 @@
 const fs = require('fs');
 var createClient = require('pa11y-webservice-client-node');
+const { forEach } = require('underscore');
 var config = require('../config');
 var client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
 
@@ -16,14 +17,7 @@ const getJsonFile = function getJsonFile(filePath, encoding = 'utf8') {
 };
 getJsonFile('pa11y-tasks.json').then(function (data) {
   Object.keys(data).forEach(element => {
-    client.tasks.create({
-      name:  element.url,
-      url: element.url,
-      standard: element.standard
-    }, function (err, task) {
-        if(err)
-          console.log(err);
-        else console.log(task);
-  });
+    let el = Object.entries(element);
+    console.log(el);
   });
 });
