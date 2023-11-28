@@ -25,8 +25,9 @@ function route(app) {
 			if (error) {
 				return next(error);
 			}
+			let helpLibraryTasks = tasks.filter((task)=>task.url.includes("https://www.lg.com/us/support/help-library/"));
 			response.render('index', {
-				helptasks: tasks.map(presentTask),
+				helptasks: helpLibraryTasks.map(presentTask),
 				deleted: (typeof request.query.deleted !== 'undefined'),
 				isHomePage: true
 			});
