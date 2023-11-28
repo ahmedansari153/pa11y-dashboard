@@ -26,7 +26,7 @@ function route(app) {
 				return next(error);
 			}
 			response.render('index', {
-				tasks: tasks.map(presentTask),
+				helptasks: tasks.map(presentTask),
 				deleted: (typeof request.query.deleted !== 'undefined'),
 				isHomePage: true
 			});
