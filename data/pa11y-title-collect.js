@@ -14,14 +14,14 @@ client.tasks.get({}, function (err, tasks){
             await page.goto(url);
             await page.evaluate(() => {
                  let title = document.querySelector("h1.article-title").getInnerHTML();
+                 if (title.length > 0) {
+                    client.task(id).edit({
+                        name: title
+                    }, function (err, task) {
+                        // task  =  object representing the newly updated task, or null if an error occurred
+                    });
+                }
             });
-            if (title.length > 0) {
-                client.task(id).edit({
-                    name: title
-                }, function (err, task) {
-                    // task  =  object representing the newly updated task, or null if an error occurred
-                });
-            }
         }
         browser.close();
     });
