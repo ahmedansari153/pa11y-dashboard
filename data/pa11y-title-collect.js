@@ -6,15 +6,24 @@ const puppeteer = require('puppeteer');
 
 client.tasks.get({}, function (err, tasks){
     return new Promise(async (resolve, reject) => {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+        try {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+        } catch (error) {
+            console.log(error);
+        }
         for(var t of tasks) {
             let url = t.name;
             let id = t.id;
-            await page.goto(url);
-            let title = await page.evaluate(() => {
-                 return document.querySelector("h1.article-title").getInnerHTML();
-            });
+            await page.goto(url, {waitUntil: 'load', timeout: 0});
+            try {
+                let title = await page.evaluate(() => {
+                    return document.querySelector("h1.article-title").getInnerHTML();
+               });  
+            } catch (error) {
+                console.log("Unable to get title for: ", url);
+                console.log(error);
+            }
             if (title.length > 0) {
                 client.task(id).edit({
                     name: title
