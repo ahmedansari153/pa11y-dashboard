@@ -11,20 +11,19 @@ client.tasks.get({}, function (err, tasks){
             const page = await browser.newPage();
             for(var t of tasks) {
                 let url = t.name;
-                console.log(url);
                 let id = t.id;
-                await page.goto(url, {waitUntil: 'load', timeout: 0});
-                
-                let title = await page.evaluate(() => {
-                        return document.querySelector("h1.article-title").getInnerHTML();
-                }); 
-
-                if (title.length > 0) {
-                    client.task(id).edit({
-                        name: title
-                    }, function (err, task) {
-                        // task  =  object representing the newly updated task, or null if an error occurred
-                    });
+                if(isValidHttpUrl(url)) {
+                    await page.goto(url, {waitUntil: 'load', timeout: 0});
+                    let title = await page.evaluate(() => {
+                            return document.querySelector("h1.article-title").getInnerHTML();
+                    }); 
+                    if (title.length > 0) {
+                        client.task(id).edit({
+                            name: title
+                        }, function (err, task) {
+                            // task  =  object representing the newly updated task, or null if an error occurred
+                        });
+                    }
                 }
             }
             browser.close();
@@ -33,4 +32,15 @@ client.tasks.get({}, function (err, tasks){
             console.log(error);
         }
     });
+    function isValidHttpUrl(string) {
+        let url;
+        
+        try {
+          url = new URL(string);
+        } catch (_) {
+          return false;  
+        }
+      
+        return url.protocol === "http:" || url.protocol === "https:";
+      }
 });
