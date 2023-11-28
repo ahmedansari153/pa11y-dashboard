@@ -11,6 +11,7 @@ client.tasks.get({}, function (err, tasks){
             const page = await browser.newPage();
             for(var t of tasks) {
                 let url = t.name;
+                console.log(url);
                 let id = t.id;
                 await page.goto(url, {waitUntil: 'load', timeout: 0});
                 
