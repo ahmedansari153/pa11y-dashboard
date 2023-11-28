@@ -12,7 +12,9 @@ client.tasks.get({}, function (err, tasks){
             let url = t.name;
             let id = t.id;
             await page.goto(url);
-            let title = document.querySelector("h1.article-title").getInnerHTML();
+            await page.evaluate(() => {
+                 let title = document.querySelector("h1.article-title").getInnerHTML();
+            });
             if (title.length > 0) {
                 client.task(id).edit({
                     name: title
