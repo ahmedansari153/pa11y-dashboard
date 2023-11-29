@@ -7,9 +7,6 @@ const puppeteer = require('puppeteer');
 // -f "json file path" -u "sitemap url" -r "rename tasks with current page titles"
 const parseArgs = require('minimist-lite')(process.argv.slice(2));
 
-let pa11yDashboardCreate = Object.create(app);
-pa11yDashboardCreate.init(parseArgs);
-
 const app = {
     init: function(arg) {
         let keys = Object.keys(arg);
@@ -134,3 +131,6 @@ const app = {
         return url.protocol === "http:" || url.protocol === "https:";
     },
 }
+
+let pa11yDashboardCreate = Object.create(app);
+pa11yDashboardCreate.init(parseArgs);
