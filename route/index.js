@@ -26,8 +26,20 @@ function route(app) {
 				return next(error);
 			}
 			let helpLibraryTasks = tasks.filter((task)=>task.url.includes("https://www.lg.com/us/support/help-library/"));
+			let supportTasks = tasks.filter((task)=> {
+				if(task.url.contains("https://www.lg.com/us/support" && !task.url.contains("https://www.lg.com/us/support/help-library/"))) {
+					return task;
+				}
+			});
+			let obsTasks = tasks.filter((task)=> {
+				if(!task.url.contains("https://www.lg.com/us/support" && !task.url.contains("https://www.lg.com/us/support/help-library/"))) {
+					return task;
+				}
+			});
 			response.render('index', {
 				helptasks: helpLibraryTasks.map(presentTask),
+				supTasks: supportTasks.map(presentTask),
+				tasks: obsTasks.map(presentTask),
 				deleted: (typeof request.query.deleted !== 'undefined'),
 				isHomePage: true
 			});
