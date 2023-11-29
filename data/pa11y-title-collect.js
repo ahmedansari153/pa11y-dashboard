@@ -38,7 +38,9 @@ const app = {
                     return obj;
                 });
                 resolve(urlObj);
-            }).then(this.addTasks(urls));
+            }).then((urlObj) => {
+                this.addTasks(urlObj);
+            });
         });
     },
     parseJSON: function(filePath, encoding) { //Parse local JSON File to object.
