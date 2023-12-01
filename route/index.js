@@ -27,12 +27,12 @@ function route(app) {
 			}
 			let helpLibraryTasks = tasks.filter((task)=>task.url.includes("https://www.lg.com/us/support/help-library/"));
 			let supportTasks = tasks.filter((task)=> {
-				if(task.url.contains("https://www.lg.com/us/support" && !task.url.contains("https://www.lg.com/us/support/help-library/"))) {
+				if(task.url.includes("https://www.lg.com/us/support" && !task.url.includes("https://www.lg.com/us/support/help-library/"))) {
 					return task;
 				}
 			});
 			let obsTasks = tasks.filter((task)=> {
-				if(!task.url.contains("https://www.lg.com/us/support" && !task.url.contains("https://www.lg.com/us/support/help-library/"))) {
+				if(!task.url.includes("https://www.lg.com/us/support" && !task.url.includes("https://www.lg.com/us/support/help-library/"))) {
 					return task;
 				}
 			});
