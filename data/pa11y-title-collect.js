@@ -4,7 +4,7 @@ const { forEach } = require('underscore');
 const config = require('../config');
 const client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
 const puppeteer = require('puppeteer');
-// -f "json file path" -u "sitemap url" -r "rename tasks with current page titles"
+//" -u "sitemap url" -r "rename tasks with current page titles"
 const parseArgs = require('minimist-lite')(process.argv.slice(2));
 
 init(parseArgs);
@@ -17,51 +17,69 @@ function init(arg) {
         console.log("Please refer to the documentation to use this application");
     }
     for(i=0;i<keys.length;i++) {
-        if(keys[i] == "f")
-            path = values[i];
-        else if(keys[i] == "u")
+        if(keys[i] == "u")
             parseSitemap(values[i]);
         else if(keys[i] == "r")
-            taskTitleRename();
+            tasksTitleRename();
     }
 } 
-function parseSitemap(url) {
+function parseSitemap(url) { // Paramaters: Sitemap Url 
     client.tasks.get({}, function (err, tasks){
         return new Promise(async (resolve, reject) => {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.goto(url, {waitUntil: 'load', timeout: 0});
             let urlObj = await page.evaluate(() => {
-                let obj = {};
+                let obj = [];
                 document.querySelectorAll('loc').forEach(function (currentValue, currentIndex, listObj) {
-                    obj[currentValue.innerHTML] = {url:currentValue.innerHTML}
+                    obj.push({
+                        url: currentValue.innerHTML,
+                        title: ""
+                    });
                 }); 
                 return obj;
             });
+            browser.close();
             resolve(urlObj);
         }).then((urlObj) => {
-            addTasks(urlObj);
+            getTitles(urlObj);
         });
     });
 }
-
-function parseJSON(filePath, encoding) { //Parse local JSON File to object.
-    return new Promise(function getJsonFileImpl(resolve, reject) {
-        fs.readFile(filePath, encoding, function readFileCallback(err, contents) {
-            if(err) {
-            return reject(err);
+function getTitles(arr) { //Get titles for all urls found in sitemap parse. If not found delete item from array.
+    return new Promise(async (resolve, reject) => {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        let updated = arr;
+        for(let i=0; i<updated.length; i++) {
+            await page.goto(updated[i].url, {waitUntil: 'load', timeout: 0});
+            let title = await page.evaluate(() => {
+                return document.querySelector("title");
+            });
+            let found = false;
+            for (let j = 0; j < updated.length; j++) {
+                if(updated[i].title == title) {
+                    found = true;
+                    break;
+                }                
             }
-            resolve(contents);
-        });
-    }).then(JSON.parse);
+            if(found == false)
+                updated[i].title = title;
+            else {
+                updated[i].splice();
+            }
+        }
+        resolve(updated);
+    }).then((updated) => {
+        addTasks(updated);
+    });
 }
-
 function addTasks (data) {
     client.tasks.get({}, function (err, tasks){
         for(var d of data) {
             let exists = false;
             for(var t of tasks) {
-                if(d.url==t.url) {
+                if(d.title==t.name) {
                     exists=true;
                     console.log(d.url, " already exists in the task list")
                     break;
@@ -69,7 +87,7 @@ function addTasks (data) {
             }
             if(!exists) {
                 client.tasks.create({
-                    name: d.url,
+                    name: d.title,
                     url: element,
                     standard: "WCAG2AA",
                     timeout: 600000,
@@ -87,7 +105,7 @@ function addTasks (data) {
     });
 }
 
-function taskTitleRename() { //Renames all tasks that have URL's as names with titles of page
+function tasksTitleRename() { //Renames all tasks that have URL's as names with titles of page
     client.tasks.get({}, function (err, tasks){
         return new Promise(async (resolve, reject) => {
         try {
