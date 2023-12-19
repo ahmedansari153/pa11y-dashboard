@@ -6,14 +6,14 @@ const client = createClient('http://' + config.webservice.host + ':' + config.we
 const puppeteer = require('puppeteer');
 //" -u "sitemap url" -r "rename tasks with current page titles"
 
-parseSitemap("https://wwww.lg.com/us/sitemap-cs.xml")
+parseSitemap("https://www.lg.com/us/sitemap-cs.xml")
 
 function parseSitemap(url) { // Paramaters: Sitemap Url 
     client.tasks.get({}, function (err, tasks){
         return new Promise(async (resolve, reject) => {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
-            await page.goto(url, {waitUntil: 'load', timeout: 0});
+            await page.goto(query, {waitUntil : 'networkidle2' }).catch(e => void 0);
             console.log(url);
             let urlObj = await page.evaluate(() => {
                 let obj = [];
