@@ -9,26 +9,15 @@ const parseArgs = require('minimist-lite')(process.argv.slice(2));
 
 init(parseArgs);
 
-function init(arg) {
-    let keys = Object.keys(arg);
-    let values = Object.values(arg);
-    let path = "";
-    if(keys.length == 1){
-        console.log("Please refer to the documentation to use this application");
-    }
-    for(i=0;i<keys.length;i++) {
-        if(keys[i] == "u")
-            parseSitemap(values[i]);
-        else if(keys[i] == "r")
-            tasksTitleRename();
-    }
-} 
+parseSitemap("https://wwww.lg.com/us/sitemap-cs.xml")
+
 function parseSitemap(url) { // Paramaters: Sitemap Url 
     client.tasks.get({}, function (err, tasks){
         return new Promise(async (resolve, reject) => {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.goto(url, {waitUntil: 'load', timeout: 0});
+            console.log(url);
             let urlObj = await page.evaluate(() => {
                 let obj = [];
                 document.querySelectorAll('loc').forEach(function (currentValue, currentIndex, listObj) {
