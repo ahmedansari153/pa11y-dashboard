@@ -13,7 +13,7 @@ function parseSitemap(url) { // Paramaters: Sitemap Url
         return new Promise(async (resolve, reject) => {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
-            await page.goto(query, {waitUntil : 'networkidle2' }).catch(e => void 0);
+            await page.goto(url, {waitUntil : 'networkidle2' }).catch(e => void 0);
             console.log(url);
             let urlObj = await page.evaluate(() => {
                 let obj = [];
