@@ -5,9 +5,6 @@ const config = require('../config');
 const client = createClient('http://' + config.webservice.host + ':' + config.webservice.port + '/');
 const puppeteer = require('puppeteer');
 //" -u "sitemap url" -r "rename tasks with current page titles"
-const parseArgs = require('minimist-lite')(process.argv.slice(2));
-
-init(parseArgs);
 
 parseSitemap("https://wwww.lg.com/us/sitemap-cs.xml")
 
