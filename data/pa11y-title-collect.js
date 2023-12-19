@@ -37,6 +37,7 @@ function parseSitemap(url) { // Paramaters: Sitemap Url
                         title: ""
                     });
                 }); 
+                console.log(obj);
                 return obj;
             });
             browser.close();
@@ -86,20 +87,38 @@ function addTasks (data) {
                 }
             }
             if(!exists) {
-                client.tasks.create({
-                    name: d.title,
-                    url: element,
-                    standard: "WCAG2AA",
-                    timeout: 600000,
-                    hideElements: ""
-                }, function (error, task) {
-                    if (error) {
-                        console.log('Error:', error);
-                    }
-                    if (task) {
-                        console.log('Imported:', task.name);
-                    }
-                });
+                if(d.url.includes("lg.com/us/support/help-library/"))  {
+                    client.tasks.create({
+                        name: d.title,
+                        url: element,
+                        standard: "WCAG2AA",
+                        timeout: 1000000,
+                        hideElements: ".navigation.b2c, .breadcrumb, .support-title, .article-feedback, .article-nav, .return-to-result, .rel-help-library-wrap, .support-link-banner-wrap, .contact-us-link-menu, .footer-box, iframe, img[src='https://tags.w55c.net/rs?id=cd05700e2b8a4cc08a1d25adb8bace5f&t=homepage']"
+                      }, function (error, task) {
+                        if (error) {
+                          console.error('Error:', error);
+                        }
+                        if (task) {
+                          console.log('Imported:', task.name);
+                        }
+                      });
+                }
+                else {
+                    client.tasks.create({
+                        name: d.title,
+                        url: element,
+                        standard: "WCAG2AA",
+                        timeout: 1000000,
+                        hideElements: "iframe, img[src='https://tags.w55c.net/rs?id=cd05700e2b8a4cc08a1d25adb8bace5f&t=homepage'"
+                    }, function (error, task) {
+                        if (error) {
+                            console.log('Error:', error);
+                        }
+                        if (task) {
+                            console.log('Imported:', task.name);
+                        }
+                    });
+                }
             }
         }
     });

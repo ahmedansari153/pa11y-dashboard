@@ -29,8 +29,8 @@ getJsonFile('pa11y-tasks.json').then(function (data) {
       name: element,
       url: element,
       standard: "WCAG2AA",
-      timeout: 600000,
-      hideElements: ".navigation.b2c, .breadcrumb, .support-title, .article-feedback, .article-nav, .return-to-result, .rel-help-library-wrap, .support-link-banner-wrap, .contact-us-link-menu, .footer-box, iframe"
+      timeout: 1000000,
+      hideElements: ".navigation.b2c, .breadcrumb, .support-title, .article-feedback, .article-nav, .return-to-result, .rel-help-library-wrap, .support-link-banner-wrap, .contact-us-link-menu, .footer-box, iframe, img[src='https://tags.w55c.net/rs?id=cd05700e2b8a4cc08a1d25adb8bace5f&t=homepage']"
     }, function (error, task) {
       if (error) {
         console.error('Error:', error);
