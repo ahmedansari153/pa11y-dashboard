@@ -416,7 +416,7 @@ $(document).ready(function(){
 
 	// Grid View
 	$('.btn-grid').click(function () {
-		var elements = $("#grid-container .task-card");
+		var elements = $("#grid-container1 .task-card, #grid-container2 .task-card, #grid-container3 .task-card");
 		for (i = 0; i < elements.length; i++) {
 			$(elements[i]).removeClass('col-md-12');
 			$(elements[i]).addClass('col-md-4 col-sm-6');
