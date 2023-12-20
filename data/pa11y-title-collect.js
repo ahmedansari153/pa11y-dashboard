@@ -74,6 +74,7 @@ function addTasks (data) {
             }
             if(!exists) {
                 if(d.url.includes("lg.com/us/support/help-library/"))  {
+                    console.log(d.url);
                     client.tasks.create({
                         name: d.title,
                         url: element,
@@ -90,6 +91,7 @@ function addTasks (data) {
                       });
                 }
                 else {
+                    console.log(d.url);
                     client.tasks.create({
                         name: d.title,
                         url: element,
